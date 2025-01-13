@@ -1,9 +1,9 @@
-import { User } from "../models/article/user/User";
-import { EmailAddress } from "../models/article/user/EmailAddress";
+import { User } from "../models/user/User";
+import { EmailAddress } from "../models/user/EmailAddress";
 
 export interface IUserRepository {
   save(user: User): Promise<User>;
-  findByUser(id: number): Promise<User | null>;
+  findById(id: number): Promise<User | null>;
   findByEmail(email: EmailAddress): Promise<User | null>;
   delete(id: number): Promise<void>;
 }

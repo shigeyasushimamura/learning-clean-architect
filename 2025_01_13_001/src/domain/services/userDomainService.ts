@@ -1,5 +1,5 @@
 import { IUserRepository } from "../repositories/IUserRepository";
-import { EmailAddress } from "../models/article/user/EmailAddress";
+import { EmailAddress } from "../models/user/EmailAddress";
 
 export class UserDomainService {
   constructor(private readonly userRepository: IUserRepository) {}
