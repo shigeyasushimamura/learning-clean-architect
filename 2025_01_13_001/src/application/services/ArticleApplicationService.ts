@@ -4,6 +4,10 @@ import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { CreateArticleCommand } from "../commands/CreateArticleCommand";
 import { NotFoundError } from "../errors/NotFoundError";
 import { NotAuthorizedError } from "../errors/NotAuthorizedError";
+import { PrismaTransactionContextFactory, TransactionContextImpl } from "../transaction/TransactionContextImpl";
+import { timeStamp } from "console";
+import { ArticleDomainService } from "../../domain/services/ArticleDomainService";
+import { TransactionManager } from "../transaction/TransactionManager";
 
 export class ArticleApplicationService {
   constructor(
@@ -39,5 +43,21 @@ export class ArticleApplicationService {
     }
 
     await this.articleRepository.delete(id);
+  }
+
+  // トランザクション処理のサンプル例
+  async createArticleWithUser(command: CreateArticleCommand): Promise<Article> {
+    const transactionManager = new TransactionManager(new PrismaTransactionContextFactory());
+
+    return await transactionManager.run(async (context) => {
+      const user = await this.userRepository.findById(command.userId);
+      if (!user) {
+        throw new NotFoundError("User", command.userId);
+      }
+
+      const article = new Article(null, command.title, command.content, command.userId);
+      const articleDomainService = new ArticleDomainService(this.articleRepository, this.userRepository);
+      return await articleDomainService.createArticleWithUser(article, user);
+    });
   }
 }

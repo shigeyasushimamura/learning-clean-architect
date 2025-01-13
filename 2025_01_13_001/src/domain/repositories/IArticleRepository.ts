@@ -1,4 +1,5 @@
 import { Article } from "../models/article/Article";
+import { ITransactionContext } from "./ITransactionContext";
 
 export interface IArticleRepository {
   save(article: Article): Promise<Article>;

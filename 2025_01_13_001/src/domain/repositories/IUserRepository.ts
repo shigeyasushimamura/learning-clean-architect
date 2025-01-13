@@ -1,5 +1,6 @@
 import { User } from "../models/user/User";
 import { EmailAddress } from "../models/user/EmailAddress";
+import { ITransactionContext } from "./ITransactionContext";
 
 export interface IUserRepository {
   save(user: User): Promise<User>;
