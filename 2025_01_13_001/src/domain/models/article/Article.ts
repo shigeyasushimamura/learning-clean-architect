@@ -39,6 +39,10 @@ export class Article {
     return this.userId;
   }
 
+  getContent(): string {
+    return this.content;
+  }
+
   getCreatedAt(): Date {
     return this.createdAt;
   }
